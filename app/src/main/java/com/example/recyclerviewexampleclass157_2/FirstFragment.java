@@ -17,7 +17,8 @@ import com.example.recyclerviewexampleclass157_2.databinding.FragmentFirstBindin
 
 import java.util.ArrayList;
 import java.util.List;
-
+                                            // 21. Implementamos la interface del adapter
+                                            // no olvidar implementar el método.
 public class FirstFragment extends Fragment implements WordAdapter.InterfacePasarElemento {
 
     private FragmentFirstBinding mBinding;
@@ -35,6 +36,7 @@ public class FirstFragment extends Fragment implements WordAdapter.InterfacePasa
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Instanciamos el adapter y le pasamos el listado de Datos con el metodo setData.
+                                            //23. Pasamos el valor this a la instanciación del adapter.
         WordAdapter adapter = new WordAdapter(setData(),this);
         //Le pasamos el adapter al Recycler View
         mBinding.recyclerView.setAdapter(adapter);
@@ -61,8 +63,10 @@ public class FirstFragment extends Fragment implements WordAdapter.InterfacePasa
         return dataList;
     }
 
+    //22. Metodo implementado de la interface.
     @Override
     public void passElement(String item) {
+        // 24. Con bundle y la biblioteca de navegacion pasamos el elemento al segundo fragmento.
         Bundle bundle = new Bundle();
         bundle.putString("item", item);
         Navigation.findNavController(mBinding.getRoot())

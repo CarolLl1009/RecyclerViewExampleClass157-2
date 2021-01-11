@@ -18,12 +18,14 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     //1. Añadir una representacion de los datos.
     private List<String> mWordList;
 
-    //Referencia a la interface que pasa el objeto
+    //17. Referencia a la interface que pasa el objeto
     private InterfacePasarElemento pasarElemento;
 
     //8. No olvidar crear el Constructor para pasar el listado de datos al instanciar el adapter
+                                                //18: añadimos la interface como dependencia del Adapter.
     public WordAdapter(List<String> mWordList, InterfacePasarElemento pasarElemento) {
         this.mWordList = mWordList;
+        //19. Instanciamos la interface.
         this.pasarElemento = pasarElemento;
     }
 
@@ -51,31 +53,37 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     }
 
 
-    //2. Crear clase interna ViewHolder
+    //2. Crear clase interna ViewHolder                       // 9. Implementar OnClickListener
     public class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textView;
 
         public WordViewHolder(@NonNull WordItemListBinding mBinding) {
             super(mBinding.getRoot());
             textView = mBinding.textView;
-            //No olvidar este paso Para que funcione el click listener.
+            //14. No olvidar este paso Para que funcione el click listener.
             itemView.setOnClickListener(this);
         }
 
+
         @Override
         public void onClick(View v) {
-            // obtengo la posición del elemento
+            // 10. obtengo la posición del elemento con el metodo getLayoutPosition.
             int position = getLayoutPosition();
+            // 11. A traves de la posición encuentro el elemento en el listado y lo guardo en variable.
             String seleccionado = mWordList.get(position);
+            //12. COn esa variable puede modificar el elemento de la lista.
             mWordList.set(position, seleccionado + " CLICK");
+            //13. Notificar al adapter que existen cambios.
             notifyDataSetChanged();
+            //20. Pasar el elemento al metodo de la interface.
             pasarElemento.passElement(seleccionado);
         }
     }
 
-    //Interface con un metodo que recibe el elemento y lo pasa a donde este implementada la interface.
+    //15 Crear Interface con un metodo que recibe el elemento
+    // y lo pasa a donde este implementada la interface.
     public interface InterfacePasarElemento{
-        //Este metodo pasa el objeto selecionado.
+        //16. Este metodo pasa el objeto selecionado.
         void passElement(String item);
     }
 
