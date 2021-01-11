@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     //1. Añadir una representacion de los datos.
     private List<String> mWordList;
 
+    //Referencia a la interface que pasa el objeto
+    private InterfacePasarElemento pasarElemento;
+
     //8. No olvidar crear el Constructor para pasar el listado de datos al instanciar el adapter
-    public WordAdapter(List<String> mWordList) {
+    public WordAdapter(List<String> mWordList, InterfacePasarElemento pasarElemento) {
         this.mWordList = mWordList;
+        this.pasarElemento = pasarElemento;
     }
 
     @NonNull
@@ -47,14 +52,31 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
 
     //2. Crear clase interna ViewHolder
-    public class WordViewHolder extends RecyclerView.ViewHolder {
+    public class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textView;
 
         public WordViewHolder(@NonNull WordItemListBinding mBinding) {
             super(mBinding.getRoot());
             textView = mBinding.textView;
+            //No olvidar este paso Para que funcione el click listener.
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // obtengo la posición del elemento
+            int position = getLayoutPosition();
+            String seleccionado = mWordList.get(position);
+            mWordList.set(position, seleccionado + " CLICK");
+            notifyDataSetChanged();
+            pasarElemento.passElement(seleccionado);
         }
     }
 
+    //Interface con un metodo que recibe el elemento y lo pasa a donde este implementada la interface.
+    public interface InterfacePasarElemento{
+        //Este metodo pasa el objeto selecionado.
+        void passElement(String item);
+    }
 
 }
